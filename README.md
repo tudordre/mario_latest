@@ -1,13 +1,13 @@
 # Mario Custom — PixiJS 2D Edition
 
-Joc complet stil Mario cu motor grafic **PixiJS v8 (WebGL/WebGPU)**, dezvoltat cu **Vite** și **Electron**, preluând și îmbunătățind toate particularitățile și mecanicile originale din `mario_custom`.
+Joc platformer inspirat de Mario, construit cu **PixiJS v8**, **Vite** și **Electron**. Poate fi jucat în browser sau ca aplicație desktop.
 
 ---
 
 ## 🚀 De ce PixiJS ca tehnologie pentru Grafica 2D?
 
-Pentru grafica 2D modernă, **PixiJS v8** este standardul de aur în industrie:
-1. **Accelerare Hardware WebGL / WebGPU**: Randare directă pe GPU, garantând un framerate stabil de 60–120 FPS fără blocaje cauzate de CPU Canvas 2D.
+Jocul folosește randare 2D accelerată hardware prin **WebGL**:
+1. **Randare PixiJS**: scena este desenată pe GPU prin WebGL, cu forme grafice și sprites pixel-art.
 2. **Sistem de Particule Dinamice (Visual Juice)**:
    - Nori fini de praf la alergare și la aterizare după sărituri mari.
    - 4 fragmente de cărămidă cu rotație și gravitație la spargere din cap sau la impactul cu racheta.
@@ -24,13 +24,13 @@ Pentru grafica 2D modernă, **PixiJS v8** este standardul de aur în industrie:
    - **Motion Blur / Ghost Afterimages**: Dâră de siluete semitransparente colorate la viteză mare, zbor cu aripile sau călare pe pasăre.
    - **Umbre Dinamice pe Sol (Drop Shadows)**: Umbre ambientale eliptice sub Mario, animăluțe și pasăre, adaptate la înălțime.
    - **Clipire Naturală a Ochilor**: Mario, pasărea și animăluțele clipesc din ochi la intervale organice.
-6. **Complet Portabil**: Rulează atât în browser la viteză instantă prin Vite (`npm run dev`), cât și ca aplicație nativă de desktop prin Electron (`npm start`).
+6. **Două moduri de rulare**: în browser prin Vite (`npm run dev`) sau ca aplicație desktop prin Electron (`npm start`).
 
 ---
 
 ## 🎮 Particularități și Mecanici de Joc
 
-Toate particularitățile din proiectul original au fost păstrate cu fidelitate 100%:
+Jocul include 8 lumi, puteri, inamici, niveluri generate procedural și o zonă subterană:
 
 ### 1. 8 Lumi x 4 Niveluri (32 Niveluri)
 Fiecare lume are o tematică vizuală distinctă (culori unice pentru cer, dealuri, iarbă, pământ):
@@ -103,7 +103,13 @@ Fiecare lume are o tematică vizuală distinctă (culori unice pentru cer, dealu
 
 ## 🛠️ Cum se rulează
 
-### Mod Dezvoltare / Browser (recomandat, pornire instantă):
+### Cerințe
+
+- Node.js compatibil cu Vite 8 și npm.
+- Un browser modern pentru versiunea web; suportul WebGL este necesar pentru randare.
+- macOS, Windows sau Linux pentru rularea desktop prin Electron.
+
+### Mod Dezvoltare / Browser
 ```bash
 npm run dev
 ```
@@ -129,7 +135,7 @@ Fișierele optimizate se generează în directorul `dist/`.
 ## 📁 Structura Proiectului
 
 ```
-/Users/tudor/wrk/mario_latest/
+.
 ├── electron/
 │   ├── main.cjs        # Procesul principal Electron pentru desktop
 │   └── preload.cjs     # Preload securizat Electron
