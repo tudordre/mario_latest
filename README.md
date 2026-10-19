@@ -1,157 +1,175 @@
 # Mario Custom — PixiJS 2D Edition
 
-Joc platformer inspirat de Mario, construit cu **PixiJS v8**, **Vite** și **Electron**. Poate fi jucat în browser sau ca aplicație desktop.
+A Mario-inspired platform game built with **PixiJS v8**, **Vite**, and **Electron**. Play it in a web browser or as a desktop application.
 
 ---
 
-## 🚀 De ce PixiJS ca tehnologie pentru Grafica 2D?
+## 🚀 Graphics and effects
 
-Jocul folosește randare 2D accelerată hardware prin **WebGL**:
-1. **Randare PixiJS**: scena este desenată pe GPU prin WebGL, cu forme grafice și sprites pixel-art.
-2. **Sistem de Particule Dinamice (Visual Juice)**:
-   - Nori fini de praf la alergare și la aterizare după sărituri mari.
-   - 4 fragmente de cărămidă cu rotație și gravitație la spargere din cap sau la impactul cu racheta.
-   - Dâră de fum și flăcări la propulsia rachetelor.
-   - Scântei incandescente în spatele mingilor de foc.
-   - Stele de impact la strivirea inamicilor.
-   - Sclipiri aurii la colectarea monedelor.
-   - Fântână de 10 monede cu rotație și scântei la căderea în groapă.
-3. **Screen-Shake Tactil**: Trepidații dinamice ale ecranului la impact (lovit cărămizi, rachete, cădere în groapă, strivire inamici).
-4. **Randare Pixel-Art Clară**: `roundPixels: true` și scalare fără estompare (crisp pixelated).
-5. **Efecte de Mișcare & Cinematică Avansată**:
-   - **Squash & Stretch**: Întindere elastică pe verticală la desprinderea în săritură și tasare lină pe orizontală la aterizare.
-   - **Înclinarea Corpului în Alergare (Run Lean)**: Înclinare aerodinamică proporțională cu viteza de deplasare.
-   - **Motion Blur / Ghost Afterimages**: Dâră de siluete semitransparente colorate la viteză mare, zbor cu aripile sau călare pe pasăre.
-   - **Umbre Dinamice pe Sol (Drop Shadows)**: Umbre ambientale eliptice sub Mario, animăluțe și pasăre, adaptate la înălțime.
-   - **Clipire Naturală a Ochilor**: Mario, pasărea și animăluțele clipesc din ochi la intervale organice.
-6. **Două moduri de rulare**: în browser prin Vite (`npm run dev`) sau ca aplicație desktop prin Electron (`npm start`).
+The game uses hardware-accelerated 2D rendering with **WebGL**:
 
----
-
-## 🎮 Particularități și Mecanici de Joc
-
-Jocul include 8 lumi, puteri, inamici, niveluri generate procedural și o zonă subterană:
-
-### 1. 8 Lumi x 4 Niveluri (32 Niveluri)
-Fiecare lume are o tematică vizuală distinctă (culori unice pentru cer, dealuri, iarbă, pământ):
-- **Lumea 1**: Câmpia Senină (Cer albastru clasic, iarbă verde)
-- **Lumea 2**: Deșertul de Aur (Apus cald, nuanțe teracotă)
-- **Lumea 3**: Amurgul Violet (Cer violet, dealuri nocturne)
-- **Lumea 4**: Valea Cristalului (Nuanțe acvamarin și smarald)
-- **Lumea 5**: Munții Purpurii (Apus carmin, nuanțe vulcanice)
-- **Lumea 6**: Noaptea Înstelată (Albastru intens, atmosferă nocturnă)
-- **Lumea 7**: Pădurea Fermecată (Verde proaspăt de primăvară)
-- **Lumea 8**: Castelul Întunecat (Obsidian, magenta închisă)
-
-### 2. Generare Procedurală Inteligentă
-- **Zonă de start sigură**: 48 de tile-uri cu monede de pornire, cărămizi casante și pasărea călăribilă.
-- **Gropi cu trepte ajutătoare**: Platforme și insulițe plutitoare plasate matematic astfel încât traiectoria săriturii să nu fie niciodată blocată de un tavan.
-- **Scări de cărămizi și tuburi verzi**: Tuburi de 2 sau 3 tile-uri înălțime cu trepte de cărămidă.
-- **Curățare automată (pruning)** a elementelor din spatele camerei pentru performanță maximă.
-
-### 3. Transformări Mario și Puteri
-- **Mario Mic (Small)**: Dimensiune 20×30.
-- **Mario Mare (Big)**: După primul animal portocaliu (dimensiune 24×48).
-- **Mario de Foc (Fire)**: După al doilea animal portocaliu (haină portocalie, salopetă albă). Trage cu mingi de foc (<kbd>Shift</kbd>).
-- **Mario cu Rachete (Rockets!)**: După adunarea a **3 animale portocalii**! Trage cu rachete rapide de mare viteză care sparg cărămizile și înving inamicii pe o rază mărită!
-- **Puterile persistă** între niveluri la trecerea prin steag și castel.
-
-### 4. Pasărea Uriașă Călăribilă & Aripile
-- **Pasărea Albastră**: Apare chiar la începutul nivelului (56×72 px). Mario poate sări pe ea pentru a o călări. Oferă **+15% viteză** și **super-sărituri** (viteză verticală -780 vs -520 normal).
-- Dacă Mario este lovit pe pasăre, pasărea se sperie și fuge cu viteză, iar Mario este demontat cu invulnerabilitate temporară.
-- **Aripile Divine**: Apar plutind în aer după 5–20 secunde. Colectarea lor îi oferă lui Mario aripi de înger cu vârfuri roz; fiecare apăsare a tastei de săritură generează o bătaie de aripi, permițând zborul continuu!
-
-### 5. Cameră Subterană Secretă
-- Coboară pe orice tub apăsând <kbd>↓</kbd> sau <kbd>S</kbd>.
-- Intri într-o peșteră misterioasă cu stalactite și **72 de monede de aur** (3 rânduri a câte 24 monede).
-- Ieșirea prin capătul peșterii te teleportează deasupra următorului tub de la suprafață.
-
-### 6. Căderea în Groapă & Recompensă de 10 Bani
-- Căderea într-o groapă declanșează un bonus special de **+10 bani** (`PIT_REWARD = 10`).
-- O fântână de 10 monede aurii țâșnește din groapă cu rotație și scântei.
-- Se aude melodia chiptune descendentă de ~3 secunde cu bas sintetizat.
-
-### 7. Finalul de Nivel (Steag și Castel)
-- La distanța de 9000px apare catargul cu bila de aur și steagul roșu, urmat de castel.
-- Mario alunecă lin pe steag, coboară și intră automat în ușa castelului, avansând în nivelul următor.
-- Trecerea de nivelul 8-4 afișează ecranul glorios de **Victorie**!
-
-### 8. Sintetizator Audio Web Audio API
-- Toate sunetele sunt sintetizate procedural prin Web Audio API (fără fișiere audio externe):
-  - Monedă (arpegii pătrate B5 -> E6)
-  - Creștere / Putere (arpegiu ascendent în 4 note)
-  - Micșorare / Lovitură (glissando descendent dinte de ferăstrău)
-  - Strivire inamic (impact triunghiular)
-  - Spargere cărămidă (zgomot de crunch)
-  - Minge de foc și Lansare Rachetă
-  - Melodie de groapă (9 note descendente chiptune + dronă bas)
+1. **PixiJS rendering**: The scene is drawn on the GPU with WebGL, using graphics primitives and pixel-art sprites.
+2. **Dynamic particle effects**:
+   - Dust clouds while running and landing after high jumps.
+   - Four rotating, gravity-driven brick fragments when bricks are broken.
+   - Smoke and flames trailing rockets.
+   - Sparks trailing fireballs.
+   - Impact stars when enemies are stomped.
+   - Golden sparkles when collecting coins.
+   - A burst of ten spinning, sparkling coins when falling into a pit.
+3. **Screen shake**: Dynamic screen shake on impacts, including bricks, rockets, pits, and stomped enemies.
+4. **Crisp pixel art**: Pixel-rounded rendering and sharp, non-blurred scaling.
+5. **Motion and animation effects**:
+   - **Squash and stretch**: Elastic vertical stretch on takeoff and a smooth horizontal squash on landing.
+   - **Run lean**: Mario leans in proportion to movement speed.
+   - **Motion trails / ghost afterimages**: Translucent silhouettes at high speed, while flying with wings, or riding the bird.
+   - **Dynamic ground shadows**: Elliptical shadows under Mario, animals, and the bird that adapt to their height.
+   - **Natural blinking**: Mario, the bird, and animals blink at varying intervals.
+6. **Two ways to play**: Run in a browser with Vite (`npm run dev`) or as a desktop application with Electron (`npm start`).
 
 ---
 
-## ⌨️ Controale
+## 🎮 Game features and mechanics
 
-| Tastă | Acțiune |
+The game includes eight worlds, power-ups, enemies, procedurally generated levels, and an underground area.
+
+### 1. Eight worlds and four levels each (32 levels)
+
+Each world has a distinct visual theme, with its own sky, hills, grass, and ground colors:
+
+- **World 1**: Serene Plains — classic blue sky and green grass
+- **World 2**: Golden Desert — warm sunset and terracotta tones
+- **World 3**: Violet Dusk — purple sky and dusky hills
+- **World 4**: Crystal Valley — aquamarine and emerald tones
+- **World 5**: Crimson Mountains — red sunset and volcanic tones
+- **World 6**: Starry Night — deep blue and nighttime scenery
+- **World 7**: Enchanted Forest — fresh spring greens
+- **World 8**: Dark Castle — obsidian and deep magenta
+
+### 2. Procedural level generation
+
+- **Safe starting area**: 48 tiles of starting ground with coins, breakable bricks, and a rideable bird.
+- **Pit crossings**: Platforms and floating islands are generated to help provide jump routes.
+- **Brick stairways and green pipes**: Pipes are two or three tiles tall, with brick steps.
+- **Automatic pruning** removes objects behind the camera to help maintain performance.
+
+### 3. Mario forms and power-ups
+
+- **Small Mario**: 20×30 pixels.
+- **Big Mario**: Reached after collecting the first orange animal (24×48 pixels).
+- **Fire Mario**: Reached after collecting the second orange animal. Shoots fireballs with <kbd>Shift</kbd>.
+- **Rocket power**: Collecting **three orange animals** enables fast rockets that break bricks and defeat nearby enemies.
+- **Power-ups persist** between levels when passing the flag and entering the castle.
+
+### 4. Rideable giant bird and wings
+
+- **Blue bird**: Appears near the start of each level (56×72 px). Jump onto it to ride; it provides **15% extra speed** and **higher jumps** (vertical velocity -780 instead of the normal -520).
+- If Mario is hit while riding, the bird gets scared and flies away. Mario is dismounted and receives temporary invulnerability.
+- **Wings**: Appear in the air after 5–20 seconds. Collect them to gain wings; each jump-key press in the air gives Mario another flap, allowing continued flight.
+
+### 5. Secret underground area
+
+- Enter a pipe by standing on it and pressing <kbd>↓</kbd> or <kbd>S</kbd>.
+- Explore a cave with stalactites and **72 gold coins** arranged in three rows of 24.
+- Reach the far end of the cave to return to the surface above the next pipe.
+
+### 6. Pit fall and ten-coin reward
+
+- Falling into a pit triggers a special **+10 coin** bonus (`PIT_REWARD = 10`).
+- Ten spinning golden coins burst from the pit with sparkling effects.
+- A descending chiptune melody with synthesized bass plays.
+
+### 7. Level finish: flag and castle
+
+- A flagpole with a golden ball and red flag, followed by a castle, appears near the end of each level.
+- Mario slides down the flagpole and automatically enters the castle to advance to the next level.
+- Completing level 8-4 displays the **Victory** screen.
+
+### 8. Web Audio API sound synthesizer
+
+All sound effects are synthesized procedurally with the Web Audio API; no external audio files are required:
+
+- Coin pickup (square-wave arpeggio, B5 to E6)
+- Growth and power-up (four-note ascending arpeggio)
+- Damage and shrinking (descending sawtooth glissando)
+- Enemy stomp (triangle-wave impact)
+- Brick break (crunch noise)
+- Fireball and rocket launch
+- Pit-fall melody (nine descending chiptune notes with a bass drone)
+
+---
+
+## ⌨️ Controls
+
+| Key | Action |
 |---|---|
-| <kbd>←</kbd> <kbd>→</kbd> / <kbd>A</kbd> <kbd>D</kbd> | Mișcare stânga / dreapta |
-| <kbd>↑</kbd> / <kbd>W</kbd> | Săritură (cu aripi: fiecare apăsare = bătaie din aripi / zbor) |
-| <kbd>↓</kbd> / <kbd>S</kbd> (pe un tub) | Coborâre în camera subterană cu 72 monede |
-| <kbd>Space</kbd> / <kbd>Shift</kbd> | Foc (mingi de foc sau rachete după 3 portocalii) |
-| <kbd>R</kbd> | Restart rapid al jocului |
-| <kbd>Enter</kbd> | Pornire / Din nou |
+| <kbd>←</kbd> <kbd>→</kbd> / <kbd>A</kbd> <kbd>D</kbd> | Move left / right |
+| <kbd>↑</kbd> / <kbd>W</kbd> | Jump (with wings, each press flaps to keep flying) |
+| <kbd>↓</kbd> / <kbd>S</kbd> while on a pipe | Enter the underground area |
+| <kbd>Space</kbd> / <kbd>Shift</kbd> | Fire (fireballs or, after three orange animals, rockets) |
+| <kbd>R</kbd> | Restart the game |
+| <kbd>Enter</kbd> | Start / play again |
 
 ---
 
-## 🛠️ Cum se rulează
+## 🛠️ Running the game
 
-### Cerințe
+### Requirements
 
-- Node.js compatibil cu Vite 8 și npm.
-- Un browser modern pentru versiunea web; suportul WebGL este necesar pentru randare.
-- macOS, Windows sau Linux pentru rularea desktop prin Electron.
+- Node.js compatible with Vite 8 and npm.
+- A modern browser with WebGL support for the web version.
+- macOS, Windows, or Linux to run the desktop version with Electron.
 
-### Mod Dezvoltare / Browser
+### Development / browser
+
 ```bash
 npm run dev
 ```
-Deschide browserul la adresa `http://localhost:5173`.
 
-### Mod Aplicație Desktop (Electron):
+Open the URL shown by Vite (usually `http://localhost:5173`).
+
+### Desktop application (Electron)
+
 ```bash
 npm start
 ```
-sau:
+
+Alternatively:
+
 ```bash
 npm run desktop
 ```
 
-### Compilare Build de Producție:
+### Production build
+
 ```bash
 npm run build
 ```
-Fișierele optimizate se generează în directorul `dist/`.
+
+The optimized files are generated in the `dist/` directory.
 
 ---
 
-## 📁 Structura Proiectului
+## 📁 Project structure
 
 ```
 .
 ├── electron/
-│   ├── main.cjs        # Procesul principal Electron pentru desktop
-│   └── preload.cjs     # Preload securizat Electron
+│   ├── main.cjs         # Electron main process
+│   └── preload.cjs      # Electron preload script
 ├── src/
 │   ├── css/
-│   │   └── style.css   # Stiluri pixel-perfect, HUD retro și ferestre modale
+│   │   └── style.css    # Pixel-art styling, retro HUD, and modal screens
 │   └── js/
-│       ├── constants.js # Dimensiuni, viteze, fizică și cele 8 tematici de lumi
-│       ├── sfx.js       # Sintetizator audio Web Audio API (fără fișiere externe)
-│       ├── input.js     # Gestionar de taste (WASD, Săgeți, Space, Shift, R, Enter)
-│       ├── particles.js # Motor de particule 2D (praf, bucăți cărămidă, fum, foc, stele)
-│       ├── player.js    # Fizică Mario, coliziuni, puteri, călărit pasăre, aripi
-│       ├── world.js     # Generator procedural pe bucăți, subteran, inamici, steag
-│       ├── renderer.js  # Motor grafic PixiJS v8 2D (WebGL), screen-shake, scene graph
-│       └── main.js      # Buclă de joc (Game loop), sincronizare HUD, logica stărilor
-├── index.html           # Punctul principal de intrare Vite / Web
-├── vite.config.js       # Configurare Vite cu exporturi relative
-└── package.json         # Dependențe (PixiJS v8, Vite, Electron)
+│       ├── constants.js # Dimensions, speeds, physics, and eight world themes
+│       ├── sfx.js        # Web Audio API sound synthesizer
+│       ├── input.js      # Keyboard input manager
+│       ├── particles.js  # 2D particle effects
+│       ├── player.js     # Mario physics, collisions, power-ups, bird, and wings
+│       ├── world.js      # Procedural generation, underground area, enemies, and finish
+│       ├── renderer.js   # PixiJS v8 renderer, screen shake, and scene graph
+│       └── main.js       # Game loop, HUD updates, and game state
+├── index.html            # Vite / web entry point
+├── vite.config.js        # Vite configuration
+└── package.json          # Project scripts and dependencies
 ```
