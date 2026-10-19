@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mario Custom - PixiJS 2D Edition</title>
+  <link rel="stylesheet" href="./src/css/style.css" />
+</head>
+<body>
+  <div id="game-container">
+    <div id="hud">
+      <div class="hud-item"><span>BANI</span><strong id="money">0</strong></div>
+      <div class="hud-item"><span>PORTOCALII</span><strong id="oranges">0/3</strong></div>
+      <div class="hud-item"><span>LUME-NIVEL</span><strong id="level">1-1</strong></div>
+      <div class="hud-item"><span>TIMP</span><strong id="timer">3:00</strong></div>
+      <div class="hud-item"><span>DISTANȚĂ</span><strong id="distance">0m</strong></div>
+    </div>
+
+    <canvas id="game" width="960" height="540"></canvas>
+  </div>
+
+  <div id="overlay">
+    <div class="panel">
+      <h1>MARIO CUSTOM</h1>
+      <p>Joc platformer Mario îmbunătățit cu motor grafic <strong>PixiJS 2D (WebGL)</strong>, particule dinamice, screen-shake și animații fluide.</p>
+      <p>Explorează <strong>8 lumi</strong> cu câte <strong>4 niveluri</strong> (32 niveluri în total). Sari pe broaștele țestoase și creaturile verzi; adună animalele portocalii pentru transformări și rachete!</p>
+      <ul>
+        <li><kbd>←</kbd><kbd>→</kbd> sau <kbd>A</kbd><kbd>D</kbd> — Mișcare stânga / dreapta</li>
+        <li><kbd>↑</kbd> / <kbd>W</kbd> — Săritură (cu aripi: fiecare apăsare = zbor/bătaie)</li>
+        <li><kbd>↓</kbd> / <kbd>S</kbd> pe un tub — Intri în subteran pentru monede bonus</li>
+        <li><kbd>Space</kbd> / <kbd>Shift</kbd> — Foc / Rachete distrugătoare de cărămizi (după 3 portocalii)</li>
+        <li><kbd>R</kbd> — Restart rapid &nbsp;|&nbsp; <kbd>Enter</kbd> — Pornire</li>
+      </ul>
+      <button id="startBtn">START JOC</button>
+    </div>
+  </div>
+
+  <div id="gameOver" class="hidden">
+    <div class="panel">
+      <h1>GAME OVER</h1>
+      <p id="finalMsg">Ai căzut în groapă!</p>
+      <p class="big">Bani adunați: <strong id="finalMoney">0</strong></p>
+      <button id="restartBtn">DIN NOU</button>
+    </div>
+  </div>
+
+  <div id="victory" class="hidden">
+    <div class="panel">
+      <h1>AI CÂȘTIGAT!</h1>
+      <p>Felicitări! Ai trecut cu succes prin toate cele 8 lumi și 32 de niveluri!</p>
+      <p class="big">Bani finali: <strong id="victoryMoney">0</strong></p>
+      <button id="victoryRestartBtn">JOACĂ DIN NOU</button>
+    </div>
+  </div>
+
+  <script type="module" src="./src/js/main.js"></script>
+</body>
+</html>

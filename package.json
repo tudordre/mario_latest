@@ -1,0 +1,31 @@
+{
+  "name": "mario-latest",
+  "version": "1.0.0",
+  "description": "Mario Custom with hardware-accelerated PixiJS 2D graphics",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "vite build && ELECTRON_RUN_AS_NODE= electron electron/main.cjs",
+    "desktop": "ELECTRON_RUN_AS_NODE= electron electron/main.cjs"
+  },
+  "keywords": [
+    "mario",
+    "pixijs",
+    "vite",
+    "electron",
+    "game",
+    "2d"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "pixi.js": "^8.22.0"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "vite": "^8.3.4"
+  }
+}
